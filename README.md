@@ -1,5 +1,13 @@
 # pdf-extractor
 
+## Status
+
+* Super Dirty
+* Super Bugs
+* Super Idiotic implementation
+* But WORKs
+* Later on :-)
+
 ## Install `poppler`
 * OSX
 ```
