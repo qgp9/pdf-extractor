@@ -12,6 +12,55 @@ filename=""
 page_number="" 
 img_file=""
 
+def load_on_default( obj, pargs ):
+    for k, v in pargs.items():
+      if( hasattr( obj, k ) ):
+        setattr(obj, k, v )
+      else:
+        print( "no key ",k )
+
+class PDFInfo :
+  file_type = 'png'
+
+  def _init_( self, filename, *pargs ):
+    conf = {
+        'filename' = '',
+        'pagenum'  =  0,
+        }
+    self.tmp_dir   = tempfile.mkdtemp()
+    self.img_name  = ''
+    self.img_full  = ''
+
+  def gen_page_image:
+    gen_image_name()
+    com =[ 'pdftocairo' ]
+    com+=[ '-f', self.page_num, '-l', self.page_num ]
+    com+=[ '-singlefile', '-'+file_type ]
+    com+=[ filename, img_file ]
+# TODO : Check an existance of pdftocairo
+    call(com)
+
+  def gen_image_name:
+    self.img_name = '{}/img-{}'.format(self.tmp_dir, self.page_num)
+    self.img_full = self.img_name+'.'+file_type
+
+def Pdf2Cairo:
+  def _init_( self, **pargs ):
+    self.file_name = ''
+    self.file_type = 'png'
+    self.out_name  = '' 
+    load_on_default( self, pargs )
+    self.command = 'pdftocairo'
+
+  def gen_single_page_image( self, page, outname ):
+    com =[ 'pdftocairo' ,
+        '-f', page, '-l', page ,
+        '-singlefile', '-'+self.file_type ,
+        ,filename, outname ]
+    call(com)
+
+
+
 class MainFrame (Frame):
   def __init__(self, master, *pargs):
     Frame.__init__(self, master, *pargs)
@@ -108,6 +157,8 @@ def main():
   global filename, page_number, img_file
   filename = sys.argv[1]
   page_number = sys.argv[2]
+
+  pdf_info = PDFInfo( filename, int(page_number) )
   tmp_dir = tempfile.mkdtemp()
   img_file = tmp_dir+'/out_test'
   command=['pdftocairo', '-f', page_number, '-l', page_number, '-singlefile','-png',filename, img_file]
@@ -125,7 +176,7 @@ def main():
   root.mainloop()
 
 if __name__ == '__main__':
-#    try:
+  #    try:
 #        from tkinter import *
 #    except ImportError:
 #        from Tkinter import *
